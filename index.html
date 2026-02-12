@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario de Carnetizacion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #ffffff;
+      width: 100%;
+      max-width: 500px;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .logo {
+      width: 120px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: #1f2937;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input, select {
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #203a43;
+      outline: none;
+      box-shadow: 0 0 5px rgba(32,58,67,0.3);
+    }
+
+    button {
+      padding: 14px;
+      background: #203a43;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #0f2027;
+    }
+
+    .qr {
+      margin-top: 25px;
+    }
+
+    .qr img {
+      width: 150px;
+      margin-top: 10px;
+    }
+
+    .qr p {
+      font-size: 13px;
+      color: #333;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <img src="logo.png" alt="Logo Empresa" class="logo">
+
+    <h1>Formulario de carnetizacion</h1>
+    <p>
+      Llenar toda la información correctamente. 
+      Recuerda realizar el pago del carnet a través del QR que se encuentra en la parte de abajo.
+    </p>
+
+    <form action="https://api.web3forms.com/submit" method="POST">
+
+      <input type="hidden" name="access_key" value="TU_ACCESS_KEY_AQUI">
+      <input type="hidden" name="redirect" value="https://tupagina.com/gracias.html">
+      <input type="hidden" name="subject" value="Registro Empresarial">
+
+      <input type="number" name="codigo" placeholder="Indica el código que se te brindó (solo número)" required>
+
+      <input type="text" name="contacto_emergencia" placeholder="Nombre de contacto de emergencia" required>
+
+      <input type="tel" name="numero_contacto_emergencia" placeholder="Número de contacto de emergencia" required>
+
+      <select name="discapacidad" required>
+        <option value="">¿Tienes alguna discapacidad?</option>
+        <option value="No">No</option>
+        <option value="Si - Física">Sí - Física</option>
+        <option value="Si - Visual">Sí - Visual</option>
+        <option value="Si - Auditiva">Sí - Auditiva</option>
+        <option value="Otra">Otra</option>
+      </select>
+
+      <select name="rh" required>
+        <option value="">Tipo de sangre (RH)</option>
+        <option>O+</option>
+        <option>O-</option>
+        <option>A+</option>
+        <option>A-</option>
+        <option>B+</option>
+        <option>B-</option>
+        <option>AB+</option>
+        <option>AB-</option>
+      </select>
+
+      <button type="submit">Enviar Información</button>
+
+    </form>
+
+    <div class="qr">
+      <p>Escanea el código QR para realizar el pago del carnet:</p>
+      <img src="qr.png" alt="QR Pago">
+    </div>
+
+  </div>
+
+</body>
+</html>
