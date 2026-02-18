@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Formulario de Carnetizacion</title>
+  <title>Sistema Corporativo de Carnetización</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -14,146 +14,265 @@
     }
 
     body {
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background: #eef2f7;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
     }
 
-    .container {
-      background: #ffffff;
+    .card {
       width: 100%;
-      max-width: 500px;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      max-width: 650px;
+      background: #ffffff;
+      padding: 50px;
+      border-radius: 16px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.08);
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
       text-align: center;
+      margin-bottom: 35px;
     }
 
     .logo {
-      width: 120px;
+      width: 90px;
+      margin-bottom: 15px;
+    }
+
+    .header h1 {
+      font-size: 22px;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e2e8f0;
+      margin: 30px 0;
+    }
+
+    .form-group {
       margin-bottom: 20px;
     }
 
-    h1 {
-      color: #1f2937;
-      margin-bottom: 10px;
-      font-size: 24px;
-    }
-
-    p {
-      font-size: 14px;
-      color: #555;
-      margin-bottom: 25px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #334155;
     }
 
     input, select {
-      padding: 12px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
       font-size: 14px;
+      background: #f8fafc;
       transition: 0.3s;
     }
 
     input:focus, select:focus {
-      border-color: #203a43;
+      border-color: #1e293b;
+      background: #ffffff;
       outline: none;
-      box-shadow: 0 0 5px rgba(32,58,67,0.3);
+      box-shadow: 0 0 0 3px rgba(30,41,59,0.08);
     }
 
     button {
-      padding: 14px;
-      background: #203a43;
+      width: 100%;
+      padding: 15px;
+      background: #1e293b;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 15px;
-      font-weight: bold;
+      font-weight: 600;
       cursor: pointer;
       transition: 0.3s;
     }
 
     button:hover {
-      background: #0f2027;
+      background: #0f172a;
     }
 
-    .qr {
-      margin-top: 25px;
+    button.loading {
+      opacity: 0.7;
+      cursor: not-allowed;
     }
 
-    .qr img {
-      width: 150px;
+    .status {
+      margin-top: 15px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .qr-box {
+      margin-top: 40px;
+      padding: 25px;
+      background: #f1f5f9;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+
+    .qr-box img {
+      width: 170px;
       margin-top: 10px;
     }
 
-    .qr p {
-      font-size: 13px;
-      color: #333;
+    .footer {
+      margin-top: 35px;
+      text-align: center;
+      font-size: 12px;
+      color: #94a3b8;
     }
 
+    @media (max-width: 600px) {
+      .card {
+        padding: 30px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <img src="logo.png" alt="Logo Empresa" class="logo">
+  <div class="card">
 
-    <h1>Formulario de carnetizacion</h1>
-    <p>
-      Llenar toda la información correctamente. 
-      Recuerda realizar el pago del carnet a través del QR que se encuentra en la parte de abajo.
-    </p>
+    <div class="header">
+      <img src="logo.png" class="logo">
+      <h1>Sistema Corporativo de Carnetización</h1>
+      <p>Diligencie la información de manera correcta para continuar el proceso.</p>
+    </div>
 
-    <form action="https://api.web3forms.com/submit" method="POST">
+    <div class="divider"></div>
 
-      <input type="hidden" name="access_key" value="45e578ec-29ba-441d-90ef-f990f25c0c4a">
-      <input type="hidden" name="redirect" value="https://martinlutero736-web.github.io/carnet/gracias.html">
-      <input type="hidden" name="subject" value="Registro Empresarial">
+    <form id="formCarnet">
 
-      <input type="number" name="codigo" placeholder="Indica el código que se te brindó (solo número)" required>
+      <div class="form-group">
+        <label>Código asignado</label>
+        <input type="number" id="codigo" required>
+      </div>
 
-      <input type="text" name="contacto_emergencia" placeholder="Nombre de contacto de emergencia" required>
+      <div class="form-group">
+        <label>Contacto de emergencia</label>
+        <input type="text" id="contacto_emergencia" required>
+      </div>
 
-      <input type="tel" name="numero_contacto_emergencia" placeholder="Número de contacto de emergencia" required>
+      <div class="form-group">
+        <label>Número de contacto</label>
+        <input type="tel" id="numero_contacto_emergencia" required>
+      </div>
 
-      <select name="discapacidad" required>
-        <option value="">¿Tienes alguna discapacidad?</option>
-        <option value="No">No</option>
-        <option value="Si - Física">Sí - Física</option>
-        <option value="Si - Visual">Sí - Visual</option>
-        <option value="Si - Auditiva">Sí - Auditiva</option>
-        <option value="Otra">Otra</option>
-      </select>
+      <div class="form-group">
+        <label>Discapacidad</label>
+        <select id="discapacidad" required>
+          <option value="">Seleccione</option>
+          <option>No</option>
+          <option>Física</option>
+          <option>Visual</option>
+          <option>Auditiva</option>
+          <option>Otra</option>
+        </select>
+      </div>
 
-      <select name="rh" required>
-        <option value="">Tipo de sangre (RH)</option>
-        <option>O+</option>
-        <option>O-</option>
-        <option>A+</option>
-        <option>A-</option>
-        <option>B+</option>
-        <option>B-</option>
-        <option>AB+</option>
-        <option>AB-</option>
-      </select>
+      <div class="form-group">
+        <label>Tipo de sangre (RH)</label>
+        <select id="rh" required>
+          <option value="">Seleccione</option>
+          <option>O+</option>
+          <option>O-</option>
+          <option>A+</option>
+          <option>A-</option>
+          <option>B+</option>
+          <option>B-</option>
+          <option>AB+</option>
+          <option>AB-</option>
+        </select>
+      </div>
 
-      <button type="submit">Enviar Información</button>
+      <button type="submit" id="btnEnviar">Enviar Información</button>
+      <div class="status" id="status"></div>
 
     </form>
 
-    <div class="qr">
-      <p>Escanea el código QR para realizar el pago del carnet:</p>
-      <img src="qr.png" alt="QR Pago">
+    <div class="qr-box">
+      <strong>Pago del carnet</strong>
+      <p>Escanee el código QR para realizar el pago correspondiente.</p>
+      <img src="qr.png">
+    </div>
+
+    <div class="footer">
+      © 2026 Sistema Institucional - Todos los derechos reservados
     </div>
 
   </div>
+
+<script type="module">
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN7r2zY3Csw5lheRPtOUFweT-aAI8QLoE",
+    authDomain: "carnetizacion-997a8.firebaseapp.com",
+    projectId: "carnetizacion-997a8",
+    storageBucket: "carnetizacion-997a8.firebasestorage.app",
+    messagingSenderId: "13508799346",
+    appId: "1:13508799346:web:5564ed17ab1b54a8408beb"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const form = document.getElementById("formCarnet");
+  const status = document.getElementById("status");
+  const btn = document.getElementById("btnEnviar");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    btn.classList.add("loading");
+    btn.innerText = "Enviando...";
+    btn.disabled = true;
+
+    try {
+
+      await addDoc(collection(db, "registros"), {
+        codigo: Number(document.getElementById("codigo").value),
+        contacto_emergencia: document.getElementById("contacto_emergencia").value,
+        numero_contacto_emergencia: document.getElementById("numero_contacto_emergencia").value,
+        discapacidad: document.getElementById("discapacidad").value,
+        rh: document.getElementById("rh").value,
+        fecha: serverTimestamp()
+      });
+
+      window.location.href = "gracias.html";
+
+    } catch (error) {
+      status.style.color = "red";
+      status.innerText = "Error al enviar la información.";
+      btn.classList.remove("loading");
+      btn.innerText = "Enviar Información";
+      btn.disabled = false;
+    }
+
+  });
+
+</script>
 
 </body>
 </html>
