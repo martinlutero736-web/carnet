@@ -3,150 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Sistema Corporativo de Carnetización</title>
+  <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
 
-    body {
-      background: #eef2f7;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .card {
-      width: 100%;
-      max-width: 650px;
-      background: #ffffff;
-      padding: 50px;
-      border-radius: 16px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.08);
-      animation: fadeIn 0.6s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-
-    .logo {
-      width: 90px;
-      margin-bottom: 15px;
-    }
-
-    .header h1 {
-      font-size: 22px;
-      color: #1e293b;
-      margin-bottom: 8px;
-    }
-
-    .header p {
-      font-size: 14px;
-      color: #64748b;
-    }
-
-    .divider {
-      height: 1px;
-      background: #e2e8f0;
-      margin: 30px 0;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #334155;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 13px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      font-size: 14px;
-      background: #f8fafc;
-      transition: 0.3s;
-    }
-
-    input:focus, select:focus {
-      border-color: #1e293b;
-      background: #ffffff;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(30,41,59,0.08);
-    }
-
-    button {
-      width: 100%;
-      padding: 15px;
-      background: #1e293b;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #0f172a;
-    }
-
-    button.loading {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-
-    .status {
-      margin-top: 15px;
-      font-size: 14px;
-      text-align: center;
-    }
-
-    .qr-box {
-      margin-top: 40px;
-      padding: 25px;
-      background: #f1f5f9;
-      border-radius: 12px;
-      text-align: center;
-      border: 1px solid #e2e8f0;
-    }
-
-    .qr-box img {
-      width: 170px;
-      margin-top: 10px;
-    }
-
-    .footer {
-      margin-top: 35px;
-      text-align: center;
-      font-size: 12px;
-      color: #94a3b8;
-    }
-
-    @media (max-width: 600px) {
-      .card {
-        padding: 30px;
-      }
-    }
-  </style>
 </head>
 <body>
 
@@ -168,7 +28,7 @@
       </div>
 
       <div class="form-group">
-        <label>Contacto de emergencia</label>
+        <label>Nombre de contacto de emergencia</label>
         <input type="text" id="contacto_emergencia" required>
       </div>
 
@@ -208,13 +68,7 @@
       <div class="status" id="status"></div>
 
     </form>
-
-    <div class="qr-box">
-      <strong>Pago del carnet</strong>
-      <p>Escanee el código QR para realizar el pago correspondiente.</p>
-      <img src="qr.png">
-    </div>
-
+    >
     <div class="footer">
       © 2026 Sistema Institucional - Todos los derechos reservados
     </div>
@@ -246,28 +100,39 @@
     e.preventDefault();
 
     btn.classList.add("loading");
-    btn.innerText = "Enviando...";
+    btn.innerText = "Procesando...";
     btn.disabled = true;
 
     try {
 
+      // 🔐 Generar ID único de pago
+      const paymentId = "CARNET-" + Date.now();
+
+      // 💾 Guardar en Firestore
       await addDoc(collection(db, "registros"), {
         codigo: Number(document.getElementById("codigo").value),
         contacto_emergencia: document.getElementById("contacto_emergencia").value,
         numero_contacto_emergencia: document.getElementById("numero_contacto_emergencia").value,
         discapacidad: document.getElementById("discapacidad").value,
         rh: document.getElementById("rh").value,
+        paymentId: paymentId,
+        pagoConfirmado: false,
         fecha: serverTimestamp()
       });
 
-      window.location.href = "gracias.html";
+      // 🔄 Redirigir automáticamente a Bold
+      window.location.href = `https://checkout.bold.co/payment/LNK_LCF389J863?reference=${paymentId}`;
+
 
     } catch (error) {
+
+      console.error(error);
       status.style.color = "red";
       status.innerText = "Error al enviar la información.";
       btn.classList.remove("loading");
       btn.innerText = "Enviar Información";
       btn.disabled = false;
+
     }
 
   });
@@ -276,3 +141,4 @@
 
 </body>
 </html>
+ 
