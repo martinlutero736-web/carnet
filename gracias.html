@@ -91,6 +91,65 @@
       font-size:12px;
       color:#777;
     }
+   .btn-pago{
+  display:block;
+  width:100%;
+  margin-top:25px;
+  padding:18px;
+  text-align:center;
+  text-decoration:none;
+  border-radius:50px;
+  font-weight:600;
+  font-size:17px;
+  letter-spacing:0.5px;
+  color:white;
+  background: linear-gradient(90deg, #00c853, #00e676, #1de9b6);
+  background-size: 200% 200%;
+  box-shadow: 0 10px 25px rgba(0, 200, 83, 0.35);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animación suave del degradado */
+.btn-pago:hover{
+  background-position: right center;
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0, 200, 83, 0.45);
+}
+
+/* Efecto al presionar */
+.btn-pago:active{
+  transform: scale(0.97);
+}
+
+/* Brillo animado tipo pasarela */
+.btn-pago::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: all 0.6s ease;
+}
+
+.btn-pago:hover::before{
+  left:100%;
+}
+
+
+
+.error{
+  margin-top:20px;
+  padding:15px;
+  background:#fee2e2;
+  color:#b91c1c;
+  border-radius:8px;
+  text-align:center;
+  font-size:14px;
+}
 
   </style>
 </head>
@@ -100,6 +159,8 @@
   <div class="box">
 
     <h1>¡Registro Exitoso!</h1>
+    <p id="mostrarRef" style="margin-top:10px; font-weight:600;"></p>
+
     <h3>Hemos recibido tu información correctamente.</h3>
 
     <p>
@@ -137,13 +198,49 @@
 
     </div>
 
-    
+       <a id="btnPago" class="btn-pago">
+       💳 Pagar carnet ahora
+       </a>
+      <p style="margin-top:10px; font-size:13px; text-align:center; color:#b91c1c;">
+⚠️ El código se desactiva si no se realiza el pago en las próximas horas.
+</p>
+
+<p style="margin-top:15px; font-size:13px; text-align:center; color:#666;">
+🔒 Pago 100% seguro procesado por Bold.<br>
+No almacenamos datos bancarios.
+</p>
+
+<div id="errorBox"></div>
+
 
     <div class="footer">
       © 2026 Sistema Institucional - Todos los derechos reservados
     </div>
 
   </div>
+  <script>
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get("ref");
+
+  const btn = document.getElementById("btnPago");
+  const errorBox = document.getElementById("errorBox");
+
+  if (ref) {
+    btn.href = `https://checkout.bold.co/payment/LNK_LCF389J863?reference=${ref}`;
+  } else {
+    btn.style.display = "none";
+    errorBox.innerHTML = `
+      <div class="error">
+        Error: No se encontró referencia de pago.
+      </div>
+    `;
+  }
+  if (ref) {
+  btn.href = `https://checkout.bold.co/payment/LNK_LCF389J863?reference=${ref}`;
+  document.getElementById("mostrarRef").innerText = "Código asignado: " + ref;
+}
+
+</script>
 
 </body>
 </html>
