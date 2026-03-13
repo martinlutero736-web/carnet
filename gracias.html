@@ -151,6 +151,32 @@
   font-size:14px;
 }
 
+.pagoQR{
+margin-top:25px;
+text-align:center;
+}
+
+.qr{
+width:220px;
+margin-top:15px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn-descargar{
+display:inline-block;
+margin-top:15px;
+background:#16a34a;
+color:white;
+padding:10px 18px;
+border-radius:8px;
+text-decoration:none;
+font-weight:600;
+}
+
+.btn-descargar:hover{
+background:#15803d;
+}
   </style>
 </head>
 
@@ -198,15 +224,31 @@
 
     </div>
 
-       <a id="btnPago" class="btn-pago">
-       💳 Pagar carnet ahora
-       </a>
+       <div class="pagoQR">
+
+<h3>📲 Realizar pago</h3>
+
+<p>
+Escanea el siguiente código QR para realizar el pago de la carnetización
+<strong>$15.000</strong>
+</p>
+
+<img src="qr-pago.png" id="qrPago" class="qr">
+
+<br>
+
+<a href="qr-pago.png" download class="btn-descargar">
+⬇ Descargar QR para pagar
+</a>
+
+</div>
+       
       <p style="margin-top:10px; font-size:13px; text-align:center; color:#b91c1c;">
 ⚠️ El código se desactiva si no se realiza el pago en las próximas horas.
 </p>
 
 <p style="margin-top:15px; font-size:13px; text-align:center; color:#666;">
-🔒 Pago 100% seguro procesado por Wompi.<br>
+🔒 Pago 100% seguro procesado por QR empresa.<br>
 No almacenamos datos bancarios.
 </p>
 
@@ -219,25 +261,12 @@ No almacenamos datos bancarios.
 
   </div>
   <script>
-  const params = new URLSearchParams(window.location.search);
-  const ref = params.get("ref");
+  
+const params = new URLSearchParams(window.location.search);
+const ref = params.get("ref");
 
-  const btn = document.getElementById("btnPago");
-  const errorBox = document.getElementById("errorBox");
-
-  if (ref) {
-    btn.href = `https://checkout.nequi.wompi.co/l/Du5C1o?reference=${ref}`;
-  } else {
-    btn.style.display = "none";
-    errorBox.innerHTML = `
-      <div class="error">
-        Error: No se encontró referencia de pago.
-      </div>
-    `;
-  }
-  if (ref) {
-  btn.href = `https://checkout.nequi.wompi.co/l/Du5C1o?reference=${ref}`;
-  document.getElementById("mostrarRef").innerText = "Código asignado: " + ref;
+if (ref) {
+document.getElementById("mostrarRef").innerText = "Código asignado: " + ref;
 }
 
 </script>
