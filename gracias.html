@@ -179,10 +179,11 @@ background:#15803d;
 }
   </style>
 </head>
-
 <body>
 
   <div class="box">
+
+    <div class="success">✔</div>
 
     <h1>¡Registro Exitoso!</h1>
     <p id="mostrarRef" style="margin-top:10px; font-weight:600;"></p>
@@ -191,8 +192,20 @@ background:#15803d;
 
     <p>
       Nos alegra que seas parte de nuestro equipo de logística 🙌  
-      Por favor envía la captura de este registro al asesor que te está atendiendo.
+      Guarda este código y envía la captura del registro al asesor que te está atendiendo.
     </p>
+
+    <!-- CARNET DIGITAL -->
+    <div class="carnet">
+
+      <h3>🎟️ Carnet Provisional</h3>
+
+      <p><strong>Evento:</strong> Operación Logística</p>
+      <p><strong>Estado:</strong> Pendiente de activación</p>
+      <p id="codigoCarnet"></p>
+
+    </div>
+
 
     <div class="importante">
 
@@ -224,26 +237,41 @@ background:#15803d;
 
     </div>
 
-       <div class="pagoQR">
 
-<h3>📲 Realizar pago</h3>
+    <!-- PAGO QR -->
 
-<p>
-Escanea el siguiente código QR para realizar el pago de la carnetización
-<strong>$15.000</strong>
-</p>
+    <div class="pagoQR">
 
-<img src="qr-pago.png" id="qrPago" class="qr">
+      <h3>📲 Realizar pago</h3>
 
-<br>
+      <p>
+      Escanea el siguiente código QR para realizar el pago de la carnetización
+      <strong>$15.000</strong>
+      </p>
 
-<a href="qr-pago.png" download class="btn-descargar">
-⬇ Descargar QR para pagar
-</a>
+      <img src="qr-pago.png" id="qrPago" class="qr">
 
-</div>
-       
-      <p style="margin-top:10px; font-size:13px; text-align:center; color:#b91c1c;">
+      <br>
+
+      <a href="qr-pago.png" download class="btn-descargar">
+      ⬇ Descargar QR para pagar
+      </a>
+
+    </div>
+
+
+    <!-- TEMPORIZADOR -->
+
+    <div class="timerBox">
+
+      ⏳ Activación del código en:
+
+      <div id="timer">15:00</div>
+
+    </div>
+
+
+    <p style="margin-top:10px; font-size:13px; text-align:center; color:#b91c1c;">
 ⚠️ El código se desactiva si no se realiza el pago en las próximas horas.
 </p>
 
@@ -255,21 +283,93 @@ No almacenamos datos bancarios.
 <div id="errorBox"></div>
 
 
-    <div class="footer">
-      © 2026 Sistema Institucional - Todos los derechos reservados
-    </div>
+<div class="footer">
+© 2026 Sistema Institucional - Todos los derechos reservados
+</div>
 
-  </div>
-  <script>
-  
+</div>
+
+
+<script>
+
 const params = new URLSearchParams(window.location.search);
 const ref = params.get("ref");
 
 if (ref) {
+
 document.getElementById("mostrarRef").innerText = "Código asignado: " + ref;
+
+document.getElementById("codigoCarnet").innerText = "Código: " + ref;
+
 }
 
-</script>
 
+// TEMPORIZADOR
+
+let tiempo = 900;
+
+const contador = setInterval(() => {
+
+tiempo--;
+
+let min = Math.floor(tiempo/60);
+let seg = tiempo % 60;
+
+if(seg < 10) seg = "0"+seg;
+
+document.getElementById("timer").innerText = min + ":" + seg;
+
+if(tiempo <= 0){
+clearInterval(contador);
+document.getElementById("timer").innerText = "Tiempo expirado";
+}
+
+},1000);
+
+</script>
+<style>
+  .success{
+font-size:60px;
+color:#22c55e;
+text-align:center;
+margin-bottom:10px;
+}
+
+.carnet{
+background:#111;
+color:#fff;
+padding:20px;
+border-radius:10px;
+margin-top:20px;
+text-align:center;
+}
+
+.timerBox{
+margin-top:25px;
+text-align:center;
+font-weight:600;
+}
+
+#timer{
+font-size:28px;
+color:#dc2626;
+margin-top:5px;
+}
+
+.qr{
+width:220px;
+margin-top:10px;
+border-radius:10px;
+}
+
+.btn-descargar{
+display:inline-block;
+margin-top:15px;
+background:#16a34a;
+color:#fff;
+padding:10px 18px;
+border-radius:8px;
+text-decoration:none;
+}
+</style>
 </body>
-</html>
